@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:spot/auth/auth.dart';
-import 'package:spot/home.dart';
-import 'package:spot/signup.dart';
+import 'package:spot/superadmin/screens/adminhome.dart';
+
+import 'package:spot/user/authentication/Signup.dart';
+import 'package:spot/user/authentication/auth.dart';
+import 'package:spot/user/bottomnavigation/Bottom.dart';
+
 import 'package:spot/validation.dart';
 
 class LoginPage extends StatefulWidget {
@@ -57,6 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: TextFormField(
+                        controller: _emailcontroller,
                         validator: (value) =>
                             validation.validateemail(value ?? ''),
                         keyboardType: TextInputType.emailAddress,
@@ -78,6 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: TextFormField(
+                          controller: _passwordcontroller,
                           validator: (value) =>
                               validation.validatePassword(value ?? ''),
                           decoration: InputDecoration(
@@ -156,17 +161,44 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _login() async {
-    if (formkey.currentState!.validate()) {
-      final user = await _auth.logincreateUserWithEmailAndPassword(
-          _emailcontroller.text, _passwordcontroller.text);
-      if (user != null) {
-        // Form is valid
+    // Trim input values to avoid issues with leading/trailing spaces
+    String email = _emailcontroller.text.trim();
+    String password = _passwordcontroller.text.trim();
+
+    // Admin credentials check
+    if (email == 'admin@gmail.com' && password == 'Admin@1234') {
+      // Navigate to admin home
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Adminhome()),
+      );
+    }
+    // Regular user login
+    else if (formkey.currentState!.validate()) {
+      try {
+        final user = await _auth.signInWithEmailAndPassword(
+          email,
+          password,
+        );
+
+        if (user != null) {
+          // Show success message
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('LOGIN Successful!')),
+          );
+
+          // Navigate to user home
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => BottomNavigation()),
+          );
+        }
+      } catch (e) {
+        // Show error message
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('LOGIN Successful!')),
+          SnackBar(content: Text('Login failed: ${e.toString()}')),
         );
       }
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
     }
   }
 }

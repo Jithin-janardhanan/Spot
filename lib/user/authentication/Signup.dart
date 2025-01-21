@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:spot/auth/auth.dart';
-import 'package:spot/auth/login.dart';
+
+import 'package:spot/user/authentication/auth.dart';
+import 'package:spot/user/authentication/login.dart';
+import 'package:spot/user/authentication/registration.dart';
 import 'package:spot/validation.dart';
 
 class SignupPage extends StatefulWidget {
@@ -30,7 +32,14 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 243, 242, 239),
+      appBar: AppBar(
+        title: Text(
+          'Spot',
+          style: TextStyle(color: Colors.amberAccent),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.black,
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Form(
@@ -126,6 +135,11 @@ class _SignupPageState extends State<SignupPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Signup Successful!')),
         );
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Registration(),
+            ));
       }
     }
   }

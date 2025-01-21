@@ -15,7 +15,7 @@ class Authentication {
     return null;
   }
 
-  Future<User?> logincreateUserWithEmailAndPassword(
+  Future<User?> signInWithEmailAndPassword(
       String email, String password) async {
     try {
       final cred = await _auth.signInWithEmailAndPassword(
