@@ -399,7 +399,7 @@ class _UserProfileState extends State<UserProfile> {
       appBar: AppBar(
         title: const Text(
           'Spot',
-          style: TextStyle(color: Colors.amber),
+          style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: Colors.black,
@@ -407,6 +407,12 @@ class _UserProfileState extends State<UserProfile> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _isEditing ? Colors.green : Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
               onPressed: () async {
                 if (_isEditing) {
                   setState(() {
@@ -429,12 +435,18 @@ class _UserProfileState extends State<UserProfile> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
               onPressed: () {
                 _firebaseAuth.signOut();
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => LoginPage()),
-                  (Route<dynamic> route) => false, // Remove all routes
+                  (Route<dynamic> route) => false,
                 );
               },
               child: const Text('Logout'),
@@ -468,67 +480,127 @@ class _UserProfileState extends State<UserProfile> {
 
                 return SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
                         Stack(
+                          alignment: Alignment.center,
                           children: [
                             CircleAvatar(
-                              radius: 50,
+                              radius: 60,
                               backgroundImage: _image != null
                                   ? FileImage(_image!)
                                   : (_imageUrl != null && _imageUrl!.isNotEmpty
                                       ? NetworkImage(_imageUrl!)
                                       : null) as ImageProvider?,
                               child: _imageUrl == null && _image == null
-                                  ? const Icon(Icons.person, size: 50)
+                                  ? const Icon(Icons.person, size: 60)
                                   : null,
                             ),
                             if (_isEditing)
                               Positioned(
                                 bottom: 0,
-                                right: 0,
-                                child: IconButton(
-                                  icon: const Icon(Icons.edit,
-                                      color: Colors.blue),
-                                  onPressed: _pickImage,
+                                right: 10,
+                                child: InkWell(
+                                  onTap: _pickImage,
+                                  child: CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor: Colors.blue,
+                                    child: const Icon(Icons.edit,
+                                        color: Colors.white, size: 20),
+                                  ),
                                 ),
                               ),
                           ],
                         ),
                         const SizedBox(height: 20),
-                        TextFormField(
-                          controller: _name,
-                          enabled: _isEditing,
-                          decoration: InputDecoration(
-                            labelText: 'Name',
-                            prefixIcon: const Icon(Icons.person),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
+                        Card(
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          controller: _phone,
-                          enabled: _isEditing,
-                          decoration: InputDecoration(
-                            labelText: 'Number',
-                            prefixIcon: const Icon(Icons.phone),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          controller: _email,
-                          enabled: _isEditing,
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            prefixIcon: const Icon(Icons.mail),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              children: [
+                                TextFormField(
+                                  controller: _name,
+                                  enabled: _isEditing,
+                                  style: const TextStyle(color: Colors.black),
+                                  decoration: InputDecoration(
+                                    labelText: 'Name',
+                                    labelStyle:
+                                        const TextStyle(color: Colors.black),
+                                    prefixIcon: const Icon(Icons.person,
+                                        color: Colors.black),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(
+                                          color: Colors.black, width: 2),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(
+                                          color: Colors.black, width: 1.5),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                TextFormField(
+                                  controller: _phone,
+                                  enabled: _isEditing,
+                                  style: const TextStyle(color: Colors.black),
+                                  decoration: InputDecoration(
+                                    labelText: 'Number',
+                                    labelStyle:
+                                        const TextStyle(color: Colors.black),
+                                    prefixIcon: const Icon(Icons.phone,
+                                        color: Colors.black),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(
+                                          color: Colors.black, width: 2),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(
+                                          color: Colors.black, width: 1.5),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                TextFormField(
+                                  controller: _email,
+                                  enabled: _isEditing,
+                                  style: const TextStyle(color: Colors.black),
+                                  decoration: InputDecoration(
+                                    labelText: 'Email',
+                                    labelStyle:
+                                        const TextStyle(color: Colors.black),
+                                    prefixIcon: const Icon(Icons.mail,
+                                        color: Colors.black),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(
+                                          color: Colors.black, width: 2),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(
+                                          color: Colors.black, width: 1.5),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),

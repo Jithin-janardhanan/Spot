@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spot/superadmin/navigationadmin.dart';
 import 'package:spot/superadmin/screens/adminhome.dart';
 
 import 'package:spot/user/authentication/Signup.dart';
@@ -166,11 +167,11 @@ class _LoginPageState extends State<LoginPage> {
     String password = _passwordcontroller.text.trim();
 
     // Admin credentials check
-    if (email == 'admin@gmail.com' && password == 'Admin@1234') {
+    if (email == 'Admin@gmail.com' && password == 'Admin@1234') {
       // Navigate to admin home
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Adminhome()),
+        MaterialPageRoute(builder: (context) => BottomNavigationadmin()),
       );
     }
     // Regular user login

@@ -15,8 +15,9 @@ class _AdminhomeState extends State<Adminhome> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'spot Admin',
           style: TextStyle(color: Colors.amber),
+          textAlign: TextAlign.center,
+          'Spot_Admin',
         ),
         backgroundColor: const Color.fromARGB(255, 11, 10, 10),
         actions: [

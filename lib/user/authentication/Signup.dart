@@ -20,6 +20,7 @@ class _SignupPageState extends State<SignupPage> {
   // Instance of Validation class
   final _emailcontroller = TextEditingController();
   final _passwordcontroller = TextEditingController();
+  final _confirmpassword = TextEditingController();
 
   bool _isObscured = true;
   @override
@@ -73,33 +74,46 @@ class _SignupPageState extends State<SignupPage> {
                 ),
                 const SizedBox(height: 15),
                 Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: TextFormField(
-                      controller: _passwordcontroller,
-                      validator: (value) => _validations
-                          .validatePassword(value ?? ''), // Password validation
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: TextFormField(
+                    controller: _passwordcontroller,
+                    validator: (value) => _validations
+                        .validatePassword(value ?? ''), // Password validation
 
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        hintText: 'Enter Password',
-                        border: OutlineInputBorder(),
-                        prefixIcon: const Icon(Icons.lock_outline),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _isObscured
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _isObscured = !_isObscured;
-                            });
-                          },
+                    keyboardType: TextInputType.visiblePassword,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      hintText: 'Enter Password',
+                      border: OutlineInputBorder(),
+                      prefixIcon: const Icon(Icons.lock_outline),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isObscured ? Icons.visibility_off : Icons.visibility,
                         ),
+                        onPressed: () {
+                          setState(() {
+                            _isObscured = !_isObscured;
+                          });
+                        },
                       ),
-                      obscureText: _isObscured,
-                    )),
+                    ),
+                    obscureText: _isObscured,
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: TextFormField(
+                    style: new TextStyle(
+                        color: const Color.fromARGB(255, 20, 17, 17)),
+                    controller: _confirmpassword,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.lock),
+                      labelText: 'Retype password',
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -128,8 +142,15 @@ class _SignupPageState extends State<SignupPage> {
 
   _signup() async {
     if (_formKey.currentState!.validate()) {
+      if (_confirmpassword.text != _passwordcontroller.text) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Passwords do not match')),
+        );
+        return;
+      }
       final user = await _auth.createUserWithEmailAndPassword(
           _emailcontroller.text, _passwordcontroller.text);
+
       if (user != null) {
         // Form is valid
         ScaffoldMessenger.of(context).showSnackBar(

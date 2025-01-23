@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:spot/superadmin/screens/adminhome.dart';
+import 'package:spot/superadmin/screens/adminvendor.dart';
 
-import 'package:spot/user/screens/home.dart';
-import 'package:spot/user/screens/user_Profile.dart';
-
-class BottomNavigation extends StatefulWidget {
-  const BottomNavigation({super.key});
+class BottomNavigationadmin extends StatefulWidget {
+  const BottomNavigationadmin({super.key});
 
   @override
-  State<BottomNavigation> createState() => _BottomNavigationState();
+  State<BottomNavigationadmin> createState() => _BottomNavigationadminState();
 }
 
-class _BottomNavigationState extends State<BottomNavigation> {
+class _BottomNavigationadminState extends State<BottomNavigationadmin> {
   int indexNum = 0;
-  List tabWidgets = [HomePage(), UserProfile()];
+  List tabWidgets = [Adminhome(), AdminVendor()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,16 +21,16 @@ class _BottomNavigationState extends State<BottomNavigation> {
           selectedItemColor: Colors.red,
           items: const [
             BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: "Home",
+                icon: Icon(Icons.person),
+                label: "user",
                 backgroundColor: Color.fromARGB(255, 186, 17, 17)),
             BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: "Profile",
+                icon: Icon(Icons.business),
+                label: "Vendor",
                 backgroundColor: Color.fromARGB(255, 116, 25, 25)),
             BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: "Search",
+                icon: Icon(Icons.money),
+                label: "charity",
                 backgroundColor: Color.fromARGB(255, 116, 25, 25)),
           ],
           selectedFontSize: 25,
